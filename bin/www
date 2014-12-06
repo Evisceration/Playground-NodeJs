@@ -4,6 +4,11 @@ var app = require('../app');
 
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function() {
-  debug('--> Express server listening on port ' + server.address().port);
+var server = app.listen(app.get('port'), function () {
+    debug('--> Express server listening on port ' + server.address().port);
 });
+
+var PORT = 1337;
+
+var udp_server = require('../modules/udp_server');
+udp_server.bind(PORT); // Host: 0.0.0.0
