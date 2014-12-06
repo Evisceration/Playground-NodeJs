@@ -20,6 +20,7 @@
 
 var debug = require('debug')('Playground-Nodejs');
 var dgram = require('dgram');
+var client = require('./udp_client');
 var server = dgram.createSocket('udp4');
 
 server.on('listening', function () {
@@ -29,6 +30,15 @@ server.on('listening', function () {
 
 server.on('message', function (message, remote) {
     debug('--> ' + remote.address + ':' + remote.port + ' - ' + message);
+
+    var reply = new Buffer('Reply via UDP!');
+    client.send(reply, 0, reply.length, remote.port, remote.address, function (err, bytes) {
+        if (err) {
+            debug(err.stack);
+            return;
+        }
+        debug('--> UDP message sent to ' + remote.address + ':' + remote.port);
+    });
 });
 
 server.on('close', function () {
