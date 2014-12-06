@@ -31,6 +31,14 @@ server.on('listening', function () {
 server.on('message', function (message, remote) {
     debug('--> ' + remote.address + ':' + remote.port + ' - ' + message);
 
+    if (message == 'Heyho') {
+        var notifier = require('node-notifier');
+        notifier.notify({
+            'title': 'Device connected!',
+            'message': 'Connection received from ' + remote.address + ':' + remote.port
+        });
+    }
+
     var reply = new Buffer('Reply via UDP!');
     client.send(reply, 0, reply.length, remote.port, remote.address, function (err, bytes) {
         if (err) {
