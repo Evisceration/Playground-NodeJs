@@ -16,24 +16,9 @@
  * -->
  */
 
-var express = require('express');
-var router = express.Router();
-var udp_client = require('../modules/udp_client');
+// http://nodejs.org/api/dgram.html
 
-var PORT = 1337;
-var HOST = '127.0.0.1';
+var dgram = require('dgram');
+var client = dgram.createSocket('udp4');
 
-/* GET home page. */
-router.get('/', function (req, res) {
-    var message = new Buffer('Hello via UDP!');
-
-    udp_client.send(message, 0, message.length, PORT, HOST, function (err, bytes) {
-        if (err) {
-            res.send(err.stack);
-            return;
-        }
-        res.send('UDP message sent to ' + HOST + ':' + PORT);
-    });
-});
-
-module.exports = router;
+module.exports = client;
